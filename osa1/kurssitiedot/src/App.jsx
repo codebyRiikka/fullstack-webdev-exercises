@@ -1,7 +1,7 @@
 // Component to display header: course name
-const Header = ({course}) => {
+const Header = ({courseName}) => {
   return (
-    <h1>{course}</h1>
+    <h1>{courseName}</h1>
   )
 }
 
@@ -35,23 +35,34 @@ const Total = ({parts}) => {
 
 // Main app component
 const App = () => {
-  // Course name definition
-  const course = 'Half Stack application development'
-  // Course parts definition - array with objects: name & exercise count
-  const parts = [
-    { name: 'Fundamentals of React', exercises: 10},
-    { name: 'Using props to pass data', exercises: 7},
-    { name: 'State of a component', exercises: 14},
-  ];
+  // Course definition
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7
+      },
+      {
+        name: 'State of component',
+        exercises: 14
+      }
+    ]
+  }
+  
 
   // Returns the structure of this application 
   /* Rendering the Header, Content and Total components and passes the parts
   arrays as a props */
   return (
     <div>
-      <Header course = {course} />
-      <Content parts = {parts} />
-      <Total parts = {parts} />
+      <Header courseName = {course.name} />
+      <Content parts = {course.parts} />
+      <Total parts = {course.parts} />
     </div>
   )
 }
