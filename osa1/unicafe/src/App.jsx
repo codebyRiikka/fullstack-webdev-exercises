@@ -14,8 +14,8 @@ const StatisticLine = ({text, value}) => (
 // Component to show all statisticlines
 const Statistics = ({good, neutral, bad}) => {
   const all = good + neutral + bad
-  const average = all === 0 ? 0 : (good - bad) / all
-  const posPercent = all === 0 ? 0 : (good / all) * 100
+  const average = all === 0 ? 0 : ((good - bad) / all).toFixed(2);
+  const posPercent = all === 0 ? 0 : ((good / all) * 100).toFixed(2);
 
   if (all === 0) {
     return <p>No feedback given</p>
@@ -36,8 +36,8 @@ const Statistics = ({good, neutral, bad}) => {
 }
 
 // Component to display one statisticbutton + text on it
-const Button = ({handleClick, text}) => (
-  <button onClick={handleClick}>{text}</button>
+const Button = ({handleClick, text, className}) => (
+  <button onClick={handleClick} className={className}>{text}</button>
 )
 
 // Main component for the state and for rendering other components
@@ -49,9 +49,9 @@ const App = () => {
   return (
     <div className="container">
       <h1>Give Feedback</h1>
-      <Button handleClick={() => setGood(good + 1)} text="Good" />
-      <Button handleClick={() => setNeutral(neutral + 1)} text="Neutral" />
-      <Button handleClick={() => setBad(bad + 1)} text="Bad" />
+      <Button handleClick={() => setGood(good + 1)} text="Good" className="good-btn"/>
+      <Button handleClick={() => setNeutral(neutral + 1)} text="Neutral" className="neutral-btn" />
+      <Button handleClick={() => setBad(bad + 1)} text="Bad" className="bad-btn" />
       <h2>Statistics</h2>
       <Statistics good={good} neutral={neutral} bad={bad} /> 
     </div>
