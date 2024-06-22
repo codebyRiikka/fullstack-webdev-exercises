@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
+// Component to filter the list of persons
 const Filter = ({ filter, filterChangeHandling}) => {
   return (
     <div>
@@ -8,6 +10,7 @@ const Filter = ({ filter, filterChangeHandling}) => {
   )
 }
 
+// COmponent to add a new person
 const ThePerson = ({ addPerson, newName, nameChangeHandling, newNumber, numberChangeHandling}) => {
   return (
     <form onSubmit={addPerson}>
@@ -24,37 +27,53 @@ const ThePerson = ({ addPerson, newName, nameChangeHandling, newNumber, numberCh
   )
 }
 
+// Component to display the list of persons
 const Persons = ({ persons }) => {
   return (
     <ul>
       {persons.map(person =>
-        <Person key={person.name} person={person} />
+        <Person key={person.id} person={person} />
       )}
     </ul>
   )
 }
 
+// Component to display a single person
 const Person = ({ person }) => {
   return (
     <li>{person.name} {person.number}</li>
   )
 }
 
+// The main component
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-9876543' }
-  ]) 
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
 
+  // Effect hook to fetch data from JSON server
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        setPersons(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching the initial data:', error);
+      })
+  })
+
+  // Function to handle a new person add
   const addPerson = (event) => {
     event.preventDefault()
     const personToAdd = {
       name: newName,
-      number: newNumber
+      number: newNumber,
+      id: persons.length ? Math.max(persons.map(person => person.id)) + 1 : 1
     }
 
+    // Check if the person already exists
     if (persons.some(person => person.name === newName)) {
       alert(`${newName} is already in this Phonebook`)
     } else {
