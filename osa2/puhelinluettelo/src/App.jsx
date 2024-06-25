@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import personApi from '/src/personApi';
-import '/src/index.css';
+import './App.css';
 
 const Notification = ({ message, type }) => {
   if (message === null) {
@@ -17,20 +17,20 @@ const Notification = ({ message, type }) => {
 const Filter = ({ filter, filterChangeHandling}) => {
   return (
     <div>
-      filter shown with: <input value={filter} onChange={filterChangeHandling} />
+      Filter shown with: <input value={filter} onChange={filterChangeHandling} />
     </div>
   )
 }
 
-// COmponent to add a new person
+// Component to add a new person
 const ThePerson = ({ addPerson, newName, nameChangeHandling, newNumber, numberChangeHandling}) => {
   return (
     <form onSubmit={addPerson}>
       <div>
-        name: <input value={newName} onChange={nameChangeHandling} />
+        Name: <input value={newName} onChange={nameChangeHandling} />
       </div>
       <div>
-        number: <input value={newNumber} onChange={numberChangeHandling} />
+        Number: <input value={newNumber} onChange={numberChangeHandling} />
       </div>
       <div>
         <button type="submit">Add</button>
@@ -76,6 +76,12 @@ const App = () => {
         setPersons(initialPersons);
       })
       .catch(error => {
+        setNotificationMessage('Error fetching the initial data');
+        setNotificationType('error');
+        setTimeout(() => {
+          setNotificationMessage(null)
+          setNotificationType(null)
+        }, 3000)
         console.error('Error fetching the initial data:', error);
       })
   })
@@ -100,13 +106,19 @@ const App = () => {
             setNewName('')
             setNewNumber('')
             setNotificationMessage(`Updated ${newName}'s number`);
-            setNotificationType('edit');
+            setNotificationType('success');
             setTimeout(() => {
               setNotificationMessage(null)
               setNotificationType(null)
-            }, 5000)
+            }, 3000)
           })
           .catch(error => {
+            setNotificationMessage(`Error updating ${newName}. The person might have been removed from the server.`);
+            setNotificationType('error');
+            setTimeout(() => {
+              setNotificationMessage(null)
+              setNotificationType(null)
+            }, 3000)
             console.error('Error updating the person:', error);
           })
       }
@@ -118,14 +130,20 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           setNotificationMessage(`Added ${newName}`);
-          setNotificationType('success')
+          setNotificationType('success');
           setTimeout(() => {
-            setNotificationMessage(null);
-            setNotificationType(null);
-        }, 5000)
+            setNotificationMessage(null)
+            setNotificationType(null)
+        }, 3000)
       })
       .catch(error => {
-          console.error('Error adding a new person:', error);
+        setNotificationMessage(`Error adding ${newName}`);
+        setNotificationType('error');
+        setTimeout(() => {
+          setNotificationMessage(null)
+          setNotificationType(null)
+        }, 3000)
+        console.error('Error adding a new person:', error);
       })
     }
   } 
@@ -139,13 +157,19 @@ const App = () => {
         .then(() => {
           setPersons(persons.filter(person => person.id !== id))
           setNotificationMessage(`Deleted ${personToDelete.name}`);
-          setNotificationType('deleted')
+          setNotificationType('success');
           setTimeout(() => {
-            setNotificationMessage(null);
-            setNotificationType(null);
-        }, 5000)
+            setNotificationMessage(null)
+            setNotificationType(null)
+        }, 3000)
       })
       .catch(error => {
+        setNotificationMessage(`Error deleting ${personToDelete.name}`);
+        setNotificationType('error');
+        setTimeout(() => {
+          setNotificationMessage(null)
+          setNotificationType(null)
+        }, 3000)
         console.error('Error deleting the person:', error);
       })
     }
@@ -168,7 +192,7 @@ const App = () => {
   )
 
   return (
-    <div>
+    <div className='phonebookContainer'>
       <h2>Phonebook</h2>
       <Notification message={NotificationMessage} type={NotificationType}/>
       <Filter filter={filter} filterChangeHandling={filterChangeHandling} />
