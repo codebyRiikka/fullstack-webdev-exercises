@@ -84,7 +84,7 @@ const App = () => {
         }, 3000)
         console.error('Error fetching the initial data:', error);
       })
-  })
+  }, []) //Added this so it runs this only once
 
   // Function to handle a new person add
   const addPerson = (event) => {
