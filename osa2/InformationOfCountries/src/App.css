@@ -63,7 +63,7 @@ li:hover {
 
 button {
   padding: 5px 10px;
-  background-color: #c3c3c3;
+  background-color: #515050;
   border: none;
   border-radius: 5px;
   color: white;
@@ -72,7 +72,7 @@ button {
 }
 
 button:hover {
-  background-color: #666666;
+  background-color: #363636;
 }
 
 .country-details {
